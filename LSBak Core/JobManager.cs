@@ -11,13 +11,18 @@ namespace LSBak_Core
 {
     public class JobManager : IDisposable
     {
-        readonly string CONNECTION_STRING = @"Data Source=C:\Users\Shrayas\Shr\work\code\LSBak\jobs.db";
-
+        string _connectionString;
         SQLiteConnection _conn;
 
-        public JobManager()
+        public String ConnectionString
         {
-            _conn = new SQLiteConnection(CONNECTION_STRING);
+            get { return _connectionString; }
+            set { _connectionString = value; }
+        }
+
+        public void Initialize()
+        {
+            _conn = new SQLiteConnection(_connectionString);
             _conn.Open();
         }
 
@@ -96,6 +101,26 @@ namespace LSBak_Core
                 ClearJobDetails(jobId);
                 AddJobDetails(jobId, newJobDetails);
 
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw ex;
+            }
+        }
+
+        public void DeleteJob(int jobId)
+        {
+            var transaction = _conn.BeginTransaction();
+
+            try
+            {
+                if (!JobExists(jobId))
+                    throw new ArgumentException("Job doesn't exist");
+
+                _conn.Execute("delete from jobdetails where jobid = @jobid", new { jobid = jobId });
+                _conn.Execute("delete from jobs where id = @id", new { id = jobId });
                 transaction.Commit();
             }
             catch (Exception ex)
