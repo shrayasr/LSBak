@@ -38,24 +38,19 @@ namespace LSBak_Core
 
         private bool JobExists(int jobId)
         {
-            if (_conn.Query<Job>("select * from jobs where id = @id", new { id = jobId }).Count() > 0)
-                return true;
-            else
-                return false;
+            return _conn.Query<Job>("select * from jobs where id = @id", new { id = jobId }).Count() > 0;
         }
 
         private bool JobExists(string jobName)
         {
-            if (_conn.Query<Job>("select id, name from jobs where upper(name) = @name", new { name = jobName.ToUpper() }).Count() > 0)
-                return true;
-            else
-                return false;
+            return _conn.Query<Job>("select id, name from jobs where upper(name) = @name", new { name = jobName.ToUpper() }).Count() > 0;
         }
 
         private void ClearJobDetails(int jobId)
         {
             if (!JobExists(jobId))
                 throw new ArgumentException("Job doesn't exist");
+
             Job jobToClear = GetJob(jobId);
             _conn.Execute("delete from jobdetails where jobid = @jobid", new { jobid = jobToClear.Id });
 
@@ -83,9 +78,21 @@ namespace LSBak_Core
 
         public DataTable GetJobDetails(int jobId)
         {
+            if (!JobExists(jobId))
+                throw new ArgumentException("Job doesn't exist");
+
             DataTable dt = new DataTable();
             dt.Load(_conn.ExecuteReader("select id, source, destination from jobdetails where jobid = @jobid", new { jobid = jobId }));
             return dt;
+        }
+
+        public DataTable GetJobDetails(string jobName)
+        {
+            if (!JobExists(jobName))
+                throw new ArgumentException("Job doesn't exist");
+
+            Job job = GetJob(jobName);
+            return GetJobDetails(job.Id);
         }
 
         public void ModifyJob(int jobId, string newName, DataTable newJobDetails)
@@ -132,26 +139,11 @@ namespace LSBak_Core
 
         public void DeleteJob(string jobName)
         {
-            var transaction = _conn.BeginTransaction();
+            if (!JobExists(jobName))
+                throw new ArgumentException("Job doesn't exist");
 
-            try
-            {
-                if (!JobExists(jobName))
-                    throw new ArgumentException("Job doesn't exist");
-
-                Job jobToDelete = GetJob(jobName);
-
-                int jobId = jobToDelete.Id;
-
-                _conn.Execute("delete from jobdetails where jobid = @jobid", new { jobid = jobId });
-                _conn.Execute("delete from jobs where id = @id", new { id = jobId });
-                transaction.Commit();
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
+            Job jobToDelete = GetJob(jobName);
+            DeleteJob(jobToDelete.Id);
         }
 
 
