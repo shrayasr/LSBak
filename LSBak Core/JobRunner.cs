@@ -7,7 +7,7 @@ using System.Data;
 
 namespace LSBak_Core
 {
-    class JobRunner : IDisposable
+    public class JobRunner : IDisposable
     {
         SQLiteConnection _conn;
 
@@ -40,14 +40,23 @@ namespace LSBak_Core
             }
         }
 
+        private void Run(DataTable jobDetails)
+        {
+            BackupEngine backupEngine = new BackupEngine();
+            foreach (DataRow jobDetail in jobDetails.Rows)
+                backupEngine.Copy(jobDetail["source"].ToString(), jobDetail["destination"].ToString());
+        }
+
         public void Run(int jobId)
         {
             DataTable jobDetails = getJobDetails<int>(jobId);
+            Run(jobDetails);
         }
 
         public void Run(string jobName)
         {
             DataTable jobDetails = getJobDetails<string>(jobName);
+            Run(jobDetails);
         }
 
         public void Shutdown()
