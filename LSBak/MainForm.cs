@@ -30,6 +30,7 @@ namespace LSBak
         private void createJobButton_Click(object sender, EventArgs e)
         {
             CreateJob createJob = new CreateJob();
+            createJob.ConnectionString = CONNECTION_STRING;
             createJob.ShowDialog();
         }
     }

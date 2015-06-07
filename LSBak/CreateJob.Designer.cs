@@ -96,6 +96,7 @@
             this.jobDetailsDataGridView.Location = new System.Drawing.Point(6, 21);
             this.jobDetailsDataGridView.Name = "jobDetailsDataGridView";
             this.jobDetailsDataGridView.ReadOnly = true;
+            this.jobDetailsDataGridView.RowHeadersVisible = false;
             this.jobDetailsDataGridView.RowTemplate.Height = 24;
             this.jobDetailsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.jobDetailsDataGridView.Size = new System.Drawing.Size(820, 209);
@@ -166,15 +167,19 @@
             // 
             this.sourceFileTextBox.Location = new System.Drawing.Point(105, 38);
             this.sourceFileTextBox.Name = "sourceFileTextBox";
+            this.sourceFileTextBox.ReadOnly = true;
             this.sourceFileTextBox.Size = new System.Drawing.Size(242, 22);
             this.sourceFileTextBox.TabIndex = 2;
+            this.sourceFileTextBox.TabStop = false;
             // 
             // destFileTextBox
             // 
             this.destFileTextBox.Location = new System.Drawing.Point(105, 80);
             this.destFileTextBox.Name = "destFileTextBox";
+            this.destFileTextBox.ReadOnly = true;
             this.destFileTextBox.Size = new System.Drawing.Size(242, 22);
             this.destFileTextBox.TabIndex = 5;
+            this.destFileTextBox.TabStop = false;
             // 
             // label3
             // 
@@ -193,13 +198,16 @@
             this.destFileBrowseButton.TabIndex = 1;
             this.destFileBrowseButton.Text = "...";
             this.destFileBrowseButton.UseVisualStyleBackColor = true;
+            this.destFileBrowseButton.Click += new System.EventHandler(this.destFileBrowseButton_Click);
             // 
             // destFolderTextBox
             // 
             this.destFolderTextBox.Location = new System.Drawing.Point(98, 80);
             this.destFolderTextBox.Name = "destFolderTextBox";
+            this.destFolderTextBox.ReadOnly = true;
             this.destFolderTextBox.Size = new System.Drawing.Size(242, 22);
             this.destFolderTextBox.TabIndex = 11;
+            this.destFolderTextBox.TabStop = false;
             // 
             // label4
             // 
@@ -214,8 +222,10 @@
             // 
             this.sourceFolderTextBox.Location = new System.Drawing.Point(98, 38);
             this.sourceFolderTextBox.Name = "sourceFolderTextBox";
+            this.sourceFolderTextBox.ReadOnly = true;
             this.sourceFolderTextBox.Size = new System.Drawing.Size(242, 22);
             this.sourceFolderTextBox.TabIndex = 8;
+            this.sourceFolderTextBox.TabStop = false;
             // 
             // label5
             // 
@@ -234,6 +244,7 @@
             this.addFileButton.TabIndex = 2;
             this.addFileButton.Text = "Add";
             this.addFileButton.UseVisualStyleBackColor = true;
+            this.addFileButton.Click += new System.EventHandler(this.addFileButton_Click);
             // 
             // folderAddButton
             // 
@@ -243,6 +254,7 @@
             this.folderAddButton.TabIndex = 2;
             this.folderAddButton.Text = "Add";
             this.folderAddButton.UseVisualStyleBackColor = true;
+            this.folderAddButton.Click += new System.EventHandler(this.folderAddButton_Click);
             // 
             // saveJobButton
             // 
@@ -252,6 +264,7 @@
             this.saveJobButton.TabIndex = 4;
             this.saveJobButton.Text = "Save Job";
             this.saveJobButton.UseVisualStyleBackColor = true;
+            this.saveJobButton.Click += new System.EventHandler(this.saveJobButton_Click);
             // 
             // sourceFileBrowseButton
             // 
@@ -261,6 +274,7 @@
             this.sourceFileBrowseButton.TabIndex = 0;
             this.sourceFileBrowseButton.Text = "...";
             this.sourceFileBrowseButton.UseVisualStyleBackColor = true;
+            this.sourceFileBrowseButton.Click += new System.EventHandler(this.sourceFileBrowseButton_Click);
             // 
             // sourceFolderBrowseButton
             // 
@@ -270,6 +284,7 @@
             this.sourceFolderBrowseButton.TabIndex = 0;
             this.sourceFolderBrowseButton.Text = "...";
             this.sourceFolderBrowseButton.UseVisualStyleBackColor = true;
+            this.sourceFolderBrowseButton.Click += new System.EventHandler(this.sourceFolderBrowseButton_Click);
             // 
             // destFolderBrowseButton
             // 
@@ -279,6 +294,7 @@
             this.destFolderBrowseButton.TabIndex = 1;
             this.destFolderBrowseButton.Text = "...";
             this.destFolderBrowseButton.UseVisualStyleBackColor = true;
+            this.destFolderBrowseButton.Click += new System.EventHandler(this.destFolderBrowseButton_Click);
             // 
             // contextMenuStrip
             // 
@@ -295,12 +311,14 @@
             // 
             // source
             // 
+            this.source.DataPropertyName = "source";
             this.source.HeaderText = "Source";
             this.source.Name = "source";
             this.source.ReadOnly = true;
             // 
             // destination
             // 
+            this.destination.DataPropertyName = "destination";
             this.destination.HeaderText = "Destination";
             this.destination.Name = "destination";
             this.destination.ReadOnly = true;
