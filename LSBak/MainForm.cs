@@ -26,5 +26,11 @@ namespace LSBak
             runner.ConnectionString = CONNECTION_STRING;
             runner.ShowDialog();
         }
+
+        private void createJobButton_Click(object sender, EventArgs e)
+        {
+            CreateJob createJob = new CreateJob();
+            createJob.ShowDialog();
+        }
     }
 }

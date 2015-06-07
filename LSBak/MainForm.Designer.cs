@@ -31,7 +31,7 @@
             this.runJobButton = new System.Windows.Forms.Button();
             this.createJobButton = new System.Windows.Forms.Button();
             this.manageJobButton = new System.Windows.Forms.Button();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // runJobButton
@@ -52,6 +52,7 @@
             this.createJobButton.TabIndex = 1;
             this.createJobButton.Text = "Create Job";
             this.createJobButton.UseVisualStyleBackColor = true;
+            this.createJobButton.Click += new System.EventHandler(this.createJobButton_Click);
             // 
             // manageJobButton
             // 
@@ -62,21 +63,22 @@
             this.manageJobButton.Text = "Manage Jobs";
             this.manageJobButton.UseVisualStyleBackColor = true;
             // 
-            // labelControl1
+            // label1
             // 
-            this.labelControl1.Appearance.Font = new System.Drawing.Font("Georgia", 40F);
-            this.labelControl1.Location = new System.Drawing.Point(37, 21);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(192, 77);
-            this.labelControl1.TabIndex = 3;
-            this.labelControl1.Text = "LSBak";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Consolas", 40.2F);
+            this.label1.Location = new System.Drawing.Point(24, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(219, 80);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "LSBak";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(267, 340);
-            this.Controls.Add(this.labelControl1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.manageJobButton);
             this.Controls.Add(this.createJobButton);
             this.Controls.Add(this.runJobButton);
@@ -95,7 +97,7 @@
         private System.Windows.Forms.Button runJobButton;
         private System.Windows.Forms.Button createJobButton;
         private System.Windows.Forms.Button manageJobButton;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private System.Windows.Forms.Label label1;
 
     }
 }
