@@ -12,11 +12,19 @@ namespace LSBak
 {
     public partial class MainForm : Form
     {
+        readonly string CONNECTION_STRING = @"Data Source=C:\Users\Shrayas\Shr\work\code\LSBak\jobs.db";
         public MainForm()
         {
             InitializeComponent();
         }
 
         private void MainForm_Load(object sender, EventArgs e) {}
+
+        private void runJobButton_Click(object sender, EventArgs e)
+        {
+            Runner runner = new Runner();
+            runner.ConnectionString = CONNECTION_STRING;
+            runner.ShowDialog();
+        }
     }
 }
