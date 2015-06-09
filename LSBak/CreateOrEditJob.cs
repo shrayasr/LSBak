@@ -93,7 +93,6 @@ namespace LSBak
                 InitializeAddSections();
                 nameTextBox.Focus();
                 this.Text = "Create a Job";
-                this.Height = this.Height - jobSelectPanel.Height;
             }
             else if (_currentMode == Modes.EditInit)
             {
