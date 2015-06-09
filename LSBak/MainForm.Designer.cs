@@ -62,6 +62,7 @@
             this.manageJobButton.TabIndex = 2;
             this.manageJobButton.Text = "Manage Jobs";
             this.manageJobButton.UseVisualStyleBackColor = true;
+            this.manageJobButton.Click += new System.EventHandler(this.manageJobButton_Click);
             // 
             // label1
             // 

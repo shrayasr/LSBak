@@ -29,8 +29,16 @@ namespace LSBak
 
         private void createJobButton_Click(object sender, EventArgs e)
         {
-            CreateJob createJob = new CreateJob();
+            CreateOrEditJob createJob = new CreateOrEditJob();
             createJob.ConnectionString = CONNECTION_STRING;
+            createJob.ShowDialog();
+        }
+
+        private void manageJobButton_Click(object sender, EventArgs e)
+        {
+            CreateOrEditJob createJob = new CreateOrEditJob();
+            createJob.ConnectionString = CONNECTION_STRING;
+            createJob.Mode = CreateOrEditJob.Modes.EditInit;
             createJob.ShowDialog();
         }
     }

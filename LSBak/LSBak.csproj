@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateJob.cs">
+    <Compile Include="CreateOrEditJob.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreateJob.Designer.cs">
-      <DependentUpon>CreateJob.cs</DependentUpon>
+    <Compile Include="CreateOrEditJob.Designer.cs">
+      <DependentUpon>CreateOrEditJob.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -66,8 +66,8 @@
     <Compile Include="Runner.Designer.cs">
       <DependentUpon>Runner.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="CreateJob.resx">
-      <DependentUpon>CreateJob.cs</DependentUpon>
+    <EmbeddedResource Include="CreateOrEditJob.resx">
+      <DependentUpon>CreateOrEditJob.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

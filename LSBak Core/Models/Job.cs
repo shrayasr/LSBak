@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LSBak_Core.Models
 {
-    class Job
+    public class Job
     {
         public int Id { get; set; }
         public string Name { get; set; }

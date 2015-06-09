@@ -11,7 +11,7 @@ using System.IO;
 
 namespace LSBak
 {
-    public partial class CreateJob : Form
+    public partial class CreateOrEditJob : Form
     {
         DataTable _jobDetails;
         BindingSource _jobDetailsBindingSource;
@@ -23,7 +23,14 @@ namespace LSBak
             set { _connectionString = value; }
         }
 
-        public CreateJob()
+        Modes _currentMode;
+        public Modes Mode
+        {
+            get { return _currentMode; }
+            set { _currentMode = value; }
+        }
+
+        public CreateOrEditJob()
         {
             InitializeComponent();
 
@@ -35,6 +42,8 @@ namespace LSBak
             _jobDetailsBindingSource = new BindingSource();
             _jobDetailsBindingSource.DataSource = _jobDetails;
             jobDetailsDataGridView.DataSource = _jobDetailsBindingSource;
+
+            _currentMode = Modes.Add;
         }
 
         private void sourceFileBrowseButton_Click(object sender, EventArgs e)
@@ -76,10 +85,46 @@ namespace LSBak
 
         private void InitializeForm()
         {
-            _jobDetails.Rows.Clear();
-            nameTextBox.Text = "";
-            InitializeAddSections();
-            nameTextBox.Focus();
+            if (_currentMode == Modes.Add)
+            {
+                jobSelectPanel.Visible = false;
+                _jobDetails.Rows.Clear();
+                nameTextBox.Text = "";
+                InitializeAddSections();
+                nameTextBox.Focus();
+                this.Text = "Create a Job";
+                this.Height = this.Height - jobSelectPanel.Height;
+            }
+            else if (_currentMode == Modes.EditInit)
+            {
+                jobSelectPanel.Enabled = true;
+                _jobDetails.Rows.Clear();
+                jobsComboBox.Items.Clear();
+
+                using (JobManager jobManager = new JobManager())
+                {
+                    jobManager.ConnectionString = _connectionString;
+                    jobManager.Initialize();
+
+                    DataTable jobs = jobManager.GetAllJobs();
+
+                    foreach (DataRow job in jobs.Rows)
+                        jobsComboBox.Items.Add(job["name"].ToString().Trim());
+
+                    jobsComboBox.SelectedIndex = 0;
+                }
+
+                detailsPanel.Enabled = false;
+                this.Text = "Edit a Job";
+
+                jobsComboBox.Focus();
+            }
+            else if (_currentMode == Modes.Edit)
+            {
+                jobSelectPanel.Enabled = false;
+                detailsPanel.Enabled = true;
+                nameTextBox.Focus();
+            }
         }
 
         private void InitializeAddSections()
@@ -131,8 +176,21 @@ namespace LSBak
 
                 try
                 {
-                    jobManager.AddJob(jobName, _jobDetails);
-                    MessageBox.Show("Job created!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string msg = "";
+                    if (_currentMode == Modes.Add)
+                    {
+                        jobManager.AddJob(jobName, _jobDetails);
+                        msg = "Job created!";
+                    }
+                    else if (_currentMode == Modes.Edit)
+                    {
+                        int id = jobManager.GetJob(jobsComboBox.SelectedItem.ToString().Trim()).Id;
+                        jobManager.ModifyJob(id, jobName, _jobDetails);
+                        _currentMode = Modes.EditInit;
+                        msg = "Job modified!";
+                    }
+
+                    MessageBox.Show(msg, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     InitializeForm();
                 }
                 catch (ArgumentException ex)
@@ -152,6 +210,37 @@ namespace LSBak
                 return;
 
             _jobDetails.Rows.RemoveAt(_jobDetailsBindingSource.Position);
+        }
+
+        public enum Modes
+        {
+            Add,
+            EditInit,
+            Edit
+        }
+
+        private void CreateOrEditJob_Shown(object sender, EventArgs e)
+        {
+            InitializeForm();
+        }
+
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            string jobName = jobsComboBox.SelectedItem.ToString();
+
+            using (JobManager jobManager = new JobManager())
+            {
+                jobManager.ConnectionString = _connectionString;
+                jobManager.Initialize();
+
+                _jobDetails.Rows.Clear();
+                _jobDetails.Merge(jobManager.GetJobDetails(jobName));
+
+                nameTextBox.Text = jobName.Trim();
+
+                _currentMode = Modes.Edit;
+                InitializeForm();
+            }
         }
     }
 }

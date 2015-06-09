@@ -26,7 +26,7 @@ namespace LSBak_Core
             _conn.Open();
         }
 
-        private Job GetJob(string jobName)
+        public Job GetJob(string jobName)
         {
             return _conn.Query<Job>("select id, name from jobs where upper(name) = @name", new { name = jobName.ToUpper() }).First();
         }
