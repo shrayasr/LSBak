@@ -111,10 +111,16 @@ namespace LSBak
         private void saveJobButton_Click(object sender, EventArgs e)
         {
             if (nameTextBox.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Name can't empty", "Error with input", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
 
             if (_jobDetails.Rows.Count == 0)
+            {
+                MessageBox.Show("No items to add into job", "Error with input", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
 
             using (JobManager jobManager = new JobManager())
             {
@@ -138,6 +144,14 @@ namespace LSBak
                     MessageBox.Show("Fatal, Contact admin", "Error with input", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_jobDetailsBindingSource.Current == null)
+                return;
+
+            _jobDetails.Rows.RemoveAt(_jobDetailsBindingSource.Position);
         }
     }
 }
