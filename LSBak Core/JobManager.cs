@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Data.SQLite;
 using Dapper;
+using Dapper.Contrib.Extensions;
 using LSBak_Core.Models;
 
 namespace LSBak_Core
@@ -33,12 +34,12 @@ namespace LSBak_Core
 
         private Job GetJob(int jobId)
         {
-            return _conn.Query<Job>("select id, name from jobs where id = @id", new { id = jobId }).First();
+            return _conn.Get<Job>(jobId);
         }
 
         private bool JobExists(int jobId)
         {
-            return _conn.Query<Job>("select * from jobs where id = @id", new { id = jobId }).Count() > 0;
+            return !(_conn.Get<Job>(jobId) == null);
         }
 
         private bool JobExists(string jobName)
@@ -59,14 +60,14 @@ namespace LSBak_Core
         private void AddJobDetails(int jobId, DataTable dt)
         {
             var jobDetails = from row in dt.AsEnumerable()
-                             select new
+                             select new JobDetail
                              {
-                                 source = row["source"].ToString(),
-                                 destination = row["destination"].ToString(),
-                                 jobid = jobId
+                                 Source = row["source"].ToString(),
+                                 Destination = row["destination"].ToString(),
+                                 JobId = jobId
                              };
 
-            _conn.Execute("insert into jobdetails(source, destination, jobid) values (@source, @destination, @jobid)", jobDetails);
+            _conn.Insert(jobDetails);
         }
 
         public DataTable GetAllJobs()
@@ -104,7 +105,7 @@ namespace LSBak_Core
                 if (!JobExists(jobId))
                     throw new ArgumentException("Job doesn't exist");
 
-                _conn.Execute("update jobs set name = @newname where id = @id", new { newname = newName, id = jobId });
+                _conn.Update<Job>(new Job { Id = jobId, Name = newName });
                 ClearJobDetails(jobId);
                 AddJobDetails(jobId, newJobDetails);
 
@@ -161,8 +162,7 @@ namespace LSBak_Core
                 if (currentMaxId != 0)
                     nextId = currentMaxId + 1;
 
-                _conn.Execute("insert into jobs(id, name) values(@id, @jobname)", new { id = nextId, jobname = jobName });
-
+                _conn.Insert<Job>(new Job { Id = nextId, Name = jobName });
                 AddJobDetails(nextId, jobDetailsDT);
 
                 transaction.Commit();
