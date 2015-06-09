@@ -12,7 +12,7 @@ namespace LSBak
 {
     public partial class MainForm : Form
     {
-        readonly string CONNECTION_STRING = @"Data Source=C:\Users\Shrayas\Shr\work\code\LSBak\jobs.db";
+        readonly string CONNECTION_STRING = @"Data Source=jobs.db";
         public MainForm()
         {
             InitializeComponent();
