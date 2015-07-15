@@ -14,7 +14,7 @@ namespace LSBak_Core
             if (!f.Exists)
                 throw new FileNotFoundException("Source file doesn't exist");
 
-            f.CopyTo(destination);
+            f.CopyTo(destination, true);
         }
 
         private void CopyFolderToFolder(string source, string destination)
